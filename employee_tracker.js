@@ -1,5 +1,8 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+require('dotenv').config();
+const consoleTable = require('console.table');
+
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -8,11 +11,11 @@ const connection = mysql.createConnection({
   port: 3306,
 
   // Your username
-  user: 'root',
+  user: process.env.DB_USER,
 
   // Be sure to update with your own MySQL password!
-  password: '22seanfitz22',
-  database: 'employee_trackerDB',
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 connection.connect((err) => {
@@ -27,17 +30,28 @@ connection.connect((err) => {
       type: 'rawlist',
       message: 'What would you like to do?',
       choices: [
+        'View All Departments',
+        'View All Roles',
+        'View All Employees',
         'add departments',
         'add roles',
         'add employees',
-        'view departments',
-        'view roles',
-        'view employees',
         'update employee roles',
       ],
     })
     .then((answer) => {
       switch (answer.action) {
+        case 'View All Departments':
+        viewDepartment();
+          break;
+
+        case 'View All Roles':
+          viewRoles();
+          break;
+
+        case 'View All Employees':
+          viewEmployees();
+          break;
         case 'add departments':
          // artistSearch();
          console.log("add department");
@@ -53,21 +67,6 @@ connection.connect((err) => {
          console.log("add employees");
          break;
 
-        case 'view departments':
-        // songSearch();
-        console.log("view departments");
-          break;
-
-        case 'view roles':
-         // songAndAlbumSearch();
-         console.log("view roles");
-          break;
-
-        case 'view employees':
-        //  rangeSearch();
-        console.log("view employees");
-          break;
-
         case 'update employee roles':
         //  rangeSearch();
         console.log("update employee roles");
@@ -80,3 +79,26 @@ connection.connect((err) => {
     });
 };
 
+const viewDepartment = () => {
+    const query = "select * from department"      
+    connection.query(query, (err, res) => {
+      console.table(res);
+      init();
+    })  
+  };
+
+const viewEmployees = () => {
+    const query = "select * from employee"      
+    connection.query(query, (err, res) => {
+        console.table(res);
+        init();
+      })  
+  };
+
+const viewRoles = () => {
+    const query = "select * from role"      
+    connection.query(query, (err, res) => {
+    console.table(res);
+    init();
+    })  
+  };
