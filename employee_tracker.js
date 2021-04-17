@@ -88,14 +88,15 @@ const viewDepartment = () => {
     })  
   };
 
-const viewEmployees = () => {
-    const query = "select * from employee"      
+  const viewEmployees = () => {
+    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee_trackerdb.employee LEFT JOIN role on role.id = employee.role_id join department on department.id = role.department_id"      
     connection.query(query, (err, res) => {
         console.table(res);
         init();
       })  
   };
 
+  
 const viewRoles = () => {
     const query = "select * from role"      
     connection.query(query, (err, res) => {
