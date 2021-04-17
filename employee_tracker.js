@@ -53,16 +53,20 @@ connection.connect((err) => {
         case 'View All Employees':
           viewEmployees();
           break;
+
         case 'Add Department':
-          addDepartment();
+          viewDepartmentAddHelper();
+          setTimeout(addDepartment,1000);
           break;
 
         case 'Add Role':
-         addRole();
+          viewRolesAddHelper();
+          setTimeout(addRole,1000); 
           break;
 
         case 'Add Employees':
-         addEmployee();
+          viewEmployeesAddHelper();
+          setTimeout(addEmployee,1000);
          break;
 
         case 'Update Employee Roles':
@@ -88,6 +92,12 @@ const viewDepartment = () => {
     })  
   };
 
+  const viewDepartmentAddHelper = () => {
+    const query = "select * from department"      
+    connection.query(query, (err, res) => {
+      console.table(res);
+    })  
+  };
   const viewEmployees = () => {
     const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee_trackerdb.employee LEFT JOIN role on role.id = employee.role_id join department on department.id = role.department_id"      
     connection.query(query, (err, res) => {
@@ -105,12 +115,26 @@ const viewRoles = () => {
     })  
   };
 
+  const viewRolesAddHelper = () => {
+    const query = "select * from role"      
+    connection.query(query, (err, res) => {
+    console.table(res);
+    })  
+  };
+
+  const viewEmployeesAddHelper = () => {
+    const query = "SELECT * from employee"      
+    connection.query(query, (err, res) => {
+        console.table(res);
+      })  
+  };
+
   const addDepartment = () => {
     const addDepartmentQuestions = [
     {
       type: "input",
       name: "departmentName",
-      message: "What is the name of the department that you would like to add?"
+      message: "What is the name of the department that you would like to add? (Please refer to the above roles in the database to aid in your role creation)."
     },
     {
       type: "input",
@@ -133,7 +157,7 @@ const viewRoles = () => {
     {
       type: "input",
       name: "roleTitle",
-      message: "What is the title of the role that you would like to add?"
+      message: "What is the title of the role that you would like to add? (Please refer to the above roles in the database to aid in your role creation)."
     },
     {
       type: "input",
@@ -150,7 +174,7 @@ const viewRoles = () => {
     .then((answer) => {
     const query = `insert into role (title, salary, department_id) values ("${answer.roleTitle}", ${answer.roleSalary}, ${answer.departmentID})`      
     connection.query(query, (err, res) => {
-    console.log(`Role Title: ${answer.roleTitle}, Role Salary: ${answer.roleSalary}, Role Department: ${answer.roleDepartment} has been added to the database!  Please see the updated role table below:`);
+    console.log(`Role: ${answer.roleTitle} has been created with salary: ${answer.roleSalary} and department_id: ${answer.departmentID}`);
     viewRoles();
     })
   })
@@ -161,7 +185,7 @@ const viewRoles = () => {
     {
       type: "input",
       name: "firstName",
-      message: "What is the first name of the employee that you would like to add?"
+      message: "What is the first name of the employee that you would like to add? (Please refer to the above employees in the database to aid in your employee creation this and all remaining prompts)."
     },
     {
       type: "input",
