@@ -5,6 +5,8 @@
 
   ## Description
   In this application, the goal was to produce a content management system that allows a non-developer to interact with it in order to manipulate a MYSQL database.  Applications such as these enable companies to complete technical tasks with employees that do not posess highly technical skills; which, in turn, enables them to lower their cost of labor as they can accomplish database manipulation with lower level employees.
+
+  Link to Presentation (https://drive.google.com/file/d/1t2b8NDrTNDiFa4UJ9tIRC1i3U5cy4sab/view)
  
   ## Table of Contents
   - [Description](#description)
