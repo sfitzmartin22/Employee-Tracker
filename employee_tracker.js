@@ -60,18 +60,21 @@ connection.connect((err) => {
           break;
 
         case 'Add Role':
+          viewDepartmentAddHelper();
           viewRolesAddHelper();
           setTimeout(addRole,1000); 
           break;
 
         case 'Add Employees':
+          viewRolesAddHelper();
           viewEmployeesAddHelper();
           setTimeout(addEmployee,1000);
          break;
 
         case 'Update Employee Roles':
-        updateEmployeesHelper();
-        setTimeout(updateEmployeeRole,1000);
+          viewRolesAddHelper();
+          updateEmployeesHelper();
+          setTimeout(updateEmployeeRole,1000);
           break;
 
         case 'Exit the Application':
@@ -91,7 +94,7 @@ const updateEmployeeRole = () => {
   {
     type: "input",
     name: "firstName",
-    message: "What is the first name of the employee that you would like to update the role for? (Please refer to the above employees in the database to aid in your employee creation this and all remaining prompts)."
+    message: "What is the first name of the employee that you would like to update the role for? (Please refer to the above info in the database to aid in your employee creation this and all remaining prompts)."
   },
   {
     type: "input",
@@ -143,7 +146,7 @@ const viewDepartment = () => {
   };
   
 const viewRoles = () => {
-    const query = "select * from role"      
+    const query = "SELECT role.id, title, salary, role.department_id, name AS department FROM role inner JOIN department ON role.department_id = department.id"      
     connection.query(query, (err, res) => {
     console.table(res);
     init();
@@ -151,7 +154,7 @@ const viewRoles = () => {
   };
 
   const viewRolesAddHelper = () => {
-    const query = "select * from role"      
+    const query = "SELECT role.id, title, salary, role.department_id, name AS department FROM role inner JOIN department ON role.department_id = department.id"      
     connection.query(query, (err, res) => {
     console.table(res);
     })  
@@ -192,7 +195,7 @@ const viewRoles = () => {
     {
       type: "input",
       name: "roleTitle",
-      message: "What is the title of the role that you would like to add? (Please refer to the above roles in the database to aid in your role creation)."
+      message: "What is the title of the role that you would like to add? (Please refer to the above tables in the database to aid in your role creation)."
     },
     {
       type: "input",
@@ -220,7 +223,7 @@ const viewRoles = () => {
     {
       type: "input",
       name: "firstName",
-      message: "What is the first name of the employee that you would like to add? (Please refer to the above employees in the database to aid in your employee creation this and all remaining prompts)."
+      message: "What is the first name of the employee that you would like to add? (Please refer to the above tables in the database to aid in your employee creation this and all remaining prompts)."
     },
     {
       type: "input",
