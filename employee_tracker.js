@@ -33,7 +33,7 @@ connection.connect((err) => {
         'View All Departments',
         'View All Roles',
         'View All Employees',
-        'add departments',
+        'Add Department',
         'add roles',
         'add employees',
         'update employee roles',
@@ -52,23 +52,19 @@ connection.connect((err) => {
         case 'View All Employees':
           viewEmployees();
           break;
-        case 'add departments':
-         // artistSearch();
-         console.log("add department");
+        case 'Add Department':
+          addDepartment();
           break;
 
         case 'add roles':
-         // multiSearch();
          console.log("add roles");
           break;
 
         case 'add employees':
-         // rangeSearch();
          console.log("add employees");
          break;
 
         case 'update employee roles':
-        //  rangeSearch();
         console.log("update employee roles");
           break;
 
@@ -101,4 +97,27 @@ const viewRoles = () => {
     console.table(res);
     init();
     })  
+  };
+
+  const addDepartment = () => {
+    const addDepartmentQuestions = [
+    {
+      type: "input",
+      name: "departmentName",
+      message: "What is the name of the department that you would like to add?"
+    },
+    {
+      type: "input",
+      name: "departmentID",
+      message: "What is the ID of this new department?"
+    }]
+    inquirer
+    .prompt(addDepartmentQuestions)
+    .then((answer) => {
+    const query = `insert into department (id, name) values (${answer.departmentID}, "${answer.departmentName}")`      
+    connection.query(query, (err, res) => {
+    console.log(`Department name: ${answer.departmentName} Department ID: ${answer.departmentID} has been added to the database!  Please see the update department table below:`);
+    viewDepartment();
+    })
+  })
   };
