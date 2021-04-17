@@ -34,7 +34,7 @@ connection.connect((err) => {
         'View All Roles',
         'View All Employees',
         'Add Department',
-        'add roles',
+        'Add Role',
         'add employees',
         'update employee roles',
       ],
@@ -56,8 +56,8 @@ connection.connect((err) => {
           addDepartment();
           break;
 
-        case 'add roles':
-         console.log("add roles");
+        case 'Add Role':
+         addRole();
           break;
 
         case 'add employees':
@@ -118,6 +118,34 @@ const viewRoles = () => {
     connection.query(query, (err, res) => {
     console.log(`Department name: ${answer.departmentName} Department ID: ${answer.departmentID} has been added to the database!  Please see the update department table below:`);
     viewDepartment();
+    })
+  })
+  };
+
+  const addRole = () => {
+    const addRoleQuestions = [
+    {
+      type: "input",
+      name: "roleTitle",
+      message: "What is the title of the role that you would like to add?"
+    },
+    {
+      type: "input",
+      name: "roleSalary",
+      message: "What is the salary for the role that you are adding?"
+    },
+    {
+      type: "input",
+      name: "departmentID",
+      message: "What is the Department ID of this new role?"
+    }]
+    inquirer
+    .prompt(addRoleQuestions)
+    .then((answer) => {
+    const query = `insert into role (title, salary, department_id) values ("${answer.roleTitle}", ${answer.roleSalary}, ${answer.departmentID})`      
+    connection.query(query, (err, res) => {
+    console.log(`Role Title: ${answer.roleTitle}, Role Salary: ${answer.roleSalary}, Role Department: ${answer.roleDepartment} has been added to the database!  Please see the updated role table below:`);
+    viewRoles();
     })
   })
   };
