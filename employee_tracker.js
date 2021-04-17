@@ -196,11 +196,16 @@ const viewRoles = () => {
       type: "input",
       name: "roleID",
       message: "What is the role ID of this new employee?"
-    }]
+    },
+    {
+      type: "input",
+      name: "managerID",
+      message: "What is the manager ID for the manager of this new employee?"
+    },]
     inquirer
     .prompt(addEmployeeQuestions)
     .then((answer) => {
-    const query = `insert into employee (first_name, last_name, role_id) values ("${answer.firstName}", "${answer.lastName}", ${answer.roleID})`      
+    const query = `insert into employee (first_name, last_name, role_id, manager_id) values ("${answer.firstName}", "${answer.lastName}", ${answer.roleID}, ${answer.managerID})`      
     connection.query(query, (err, res) => {
     console.log(`${answer.firstName} ${answer.lastName} has been added to the employee list with Role ID: ${answer.roleID}!  Please see the updated employee table below:`);
     viewEmployees();
