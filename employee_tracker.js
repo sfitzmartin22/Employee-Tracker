@@ -70,7 +70,8 @@ connection.connect((err) => {
          break;
 
         case 'Update Employee Roles':
-        console.log("update employee roles");
+        updateEmployeesHelper();
+        setTimeout(updateEmployeeRole,1000);
           break;
 
         case 'Exit the Application':
@@ -82,6 +83,35 @@ connection.connect((err) => {
           break;
       }
     });
+};
+
+
+const updateEmployeeRole = () => {
+  const updateEmployeeQuestions = [
+  {
+    type: "input",
+    name: "firstName",
+    message: "What is the first name of the employee that you would like to update the role for? (Please refer to the above employees in the database to aid in your employee creation this and all remaining prompts)."
+  },
+  {
+    type: "input",
+    name: "lastName",
+    message: "What is the last name of the employee that you would like to update the role for"
+  },
+  {
+    type: "input",
+    name: "roleID",
+    message: "What is the new role ID for this employee?"
+  },]
+  inquirer
+  .prompt(updateEmployeeQuestions)
+  .then((answer) => {
+  const query = `update employee Set role_id = ${answer.roleID} where first_name = "${answer.firstName}" and last_name = "${answer.lastName}"`      
+  connection.query(query, (err, res) => {
+  console.log(`${answer.firstName} ${answer.lastName} has been updated to their new Role ID: ${answer.roleID}!  Please see the updated employee table below:`);
+  viewEmployees();
+  })
+})
 };
 
 const viewDepartment = () => {
@@ -99,13 +129,18 @@ const viewDepartment = () => {
     })  
   };
   const viewEmployees = () => {
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee_trackerdb.employee LEFT JOIN role on role.id = employee.role_id join department on department.id = role.department_id"      
+    const query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, role.title, role.salary, department.name, employee.manager_id FROM employee_trackerdb.employee LEFT JOIN role on role.id = employee.role_id join department on department.id = role.department_id"      
     connection.query(query, (err, res) => {
         console.table(res);
         init();
       })  
   };
-
+  const updateEmployeesHelper = () => {
+    const query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, role.title, role.salary, department.name, employee.manager_id FROM employee_trackerdb.employee LEFT JOIN role on role.id = employee.role_id join department on department.id = role.department_id"      
+    connection.query(query, (err, res) => {
+        console.table(res);
+      })  
+  };
   
 const viewRoles = () => {
     const query = "select * from role"      
