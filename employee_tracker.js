@@ -61,7 +61,7 @@ connection.connect((err) => {
           break;
 
         case 'add employees':
-         console.log("add employees");
+         addEmployee();
          break;
 
         case 'update employee roles':
@@ -146,6 +146,34 @@ const viewRoles = () => {
     connection.query(query, (err, res) => {
     console.log(`Role Title: ${answer.roleTitle}, Role Salary: ${answer.roleSalary}, Role Department: ${answer.roleDepartment} has been added to the database!  Please see the updated role table below:`);
     viewRoles();
+    })
+  })
+  };
+
+  const addEmployee = () => {
+    const addEmployeeQuestions = [
+    {
+      type: "input",
+      name: "firstName",
+      message: "What is the first name of the employee that you would like to add?"
+    },
+    {
+      type: "input",
+      name: "lastName",
+      message: "What is the last name of the employee that you would like to add"
+    },
+    {
+      type: "input",
+      name: "roleID",
+      message: "What is the role ID of this new employee?"
+    }]
+    inquirer
+    .prompt(addEmployeeQuestions)
+    .then((answer) => {
+    const query = `insert into employee (first_name, last_name, role_id) values ("${answer.firstName}", "${answer.lastName}", ${answer.roleID})`      
+    connection.query(query, (err, res) => {
+    console.log(`${answer.firstName} ${answer.lastName} has been added to the employee list with Role ID: ${answer.roleID}!  Please see the updated employee table below:`);
+    viewEmployees();
     })
   })
   };
