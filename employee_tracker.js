@@ -35,8 +35,9 @@ connection.connect((err) => {
         'View All Employees',
         'Add Department',
         'Add Role',
-        'add employees',
-        'update employee roles',
+        'Add Employees',
+        'Update Employee Roles',
+        'Exit the Application',
       ],
     })
     .then((answer) => {
@@ -60,12 +61,16 @@ connection.connect((err) => {
          addRole();
           break;
 
-        case 'add employees':
+        case 'Add Employees':
          addEmployee();
          break;
 
-        case 'update employee roles':
+        case 'Update Employee Roles':
         console.log("update employee roles");
+          break;
+
+        case 'Exit the Application':
+        exit();
           break;
 
         default:
@@ -177,3 +182,9 @@ const viewRoles = () => {
     })
   })
   };
+
+  const exit = () => {
+    return process.exit(0);
+  }
+
+  
